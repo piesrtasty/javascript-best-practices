@@ -1,5 +1,4 @@
 // Cross Browser Console Log
-
 function log() {
   try {
     // Try to log message using most common browser method
