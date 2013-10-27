@@ -1,0 +1,98 @@
+<html>
+
+  <head>
+
+    <title>Test Suite</title>
+
+    <style>
+
+      // Define styles for results
+
+      #results li.pass { color: green; }
+
+      #results li.fail { color: red; }
+
+    </style>
+
+
+    <script>
+
+      // Define assert() method
+      function assert(value, desc) {
+        var li = document.createElement("li");
+        li.className = value ? "pass" : "fail";
+        li.appendChild(document.createTextNode(desc));
+        document.getElementById("results").appendChild(li);
+      }
+
+       /* Declare a named funciton. The name is available throughout the current
+           scope and is implicitly added as a property of window */
+      function isNimble(){ return true; }
+
+      /* Create an anonymous function that's assigned to the variable canFly. The
+         variable is a window property, and the name property of the function is
+         empty */
+      var canFly = function(){ return true; };
+
+      /* Creates an anonymous function referenced by property of window */
+      window.isDeadly = function(){ return true; };
+
+      /* The variable that we assign a function to has nothing to do with its name;
+         that's controlled by what we actually name the function in its literal */
+      window.wieldsSword = function swingsSword() { return true; };
+
+      // Execute tests using assertions
+      window.onload = function() {
+
+        assert(true, "The test suite is running.");
+
+        /* The first test asserst that the window property is established, and the
+           second that the name property of the funciton is recorded. */
+        assert(typeof window.isNimble === "function", "isNibmle() defined");
+        assert(isNimble.name === "isNimble", "isNimble() has a name");
+
+        /* Tests that the variable references the anonymous function and that the
+            name property is set to the empty string (not null) */
+        assert(typeof window.canFly === "function", "canFly() defined");
+        assert(canFly.name === "", "canFly() has no name");
+
+        /* Tests that the property references the function. We could also test
+           that the function has an empty name property here */
+        assert(typeof window.isDeadly === "function", "isDeadly() defined");
+
+        /* Defines an inner function inside the outer function. Tests that inner() is
+         able to be referenced before and after its declaration and that no global
+         name is created for inner() */
+        function outer(){
+          assert(typeof inner === "function", "inner() in scope before declaration");
+          function inner(){}
+          assert(typeof inner === "function", "inner() in scope after declaration");
+          assert(window.inner === undefined, "inner() not in global scope");
+        }
+
+        outer();
+
+        /* Tests that outer() can be referenced in the global scope, but that
+           inner() can't */
+        assert(window.inner === undefined, "inner() still not in global scope");
+
+        assert(window.wieldsSword.name === 'swingsSword',
+               "wieldSword's real name is swingsSword");
+
+      }
+
+    </script>
+
+
+
+  </head>
+
+  <body>
+
+    <!-- Holds test results -->
+    <ul id="results"></ul>
+
+  </body>
+
+</html>
+
